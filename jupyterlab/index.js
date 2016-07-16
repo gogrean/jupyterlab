@@ -31,6 +31,8 @@ var app = new phosphide.Application({
     require('jupyterlab/lib/terminal/plugin').terminalExtension,
     require('phosphide/lib/extensions/commandpalette').commandPaletteExtension,
     require('jupyter-js-widgets-labextension/lib/plugin').widgetManagerExtension,
+    require('jupyterlab/lib/fitswidget/plugin').fitsHandlerExtension,
+
   ],
   providers: [
     require('jupyterlab/lib/clipboard/plugin').clipboardProvider,
