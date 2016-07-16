@@ -1,0 +1,121 @@
+// Copyright (c) Jupyter Development Team.
+// Distributed under the terms of the Modified BSD License.
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var phosphor_widget_1 = require('phosphor-widget');
+var docregistry_1 = require('../docregistry');
+//import Load = require("./js9.min");
+/*import "./js9.css";
+import "./js9support.css";
+import "./js9.min.js";
+import "./js9plugins.js";
+import "./js9support.min.js";
+*/
+/**
+ * The class name added to a csv widget.
+ */
+var FITS_CLASS = 'jp-FITSWidget';
+/**
+ * A widget for FITS tables.
+ */
+var FITSWidget = (function (_super) {
+    __extends(FITSWidget, _super);
+    /**
+     * Open a FITS image.
+     */
+    function FITSWidget(context) {
+        var _this = this;
+        _super.call(this);
+        this._context = context;
+        this.node.tabIndex = -1;
+        this.addClass(FITS_CLASS);
+        if (context.model.toString()) {
+            this.update();
+        }
+        context.pathChanged.connect(function () {
+            _this.update();
+        });
+        context.model.contentChanged.connect(function () {
+            _this.update();
+        });
+        context.contentsModelChanged.connect(function () {
+            _this.update();
+        });
+        this.renderFITS();
+    }
+    /**
+     * Dispose of the resources used by the widget.
+     */
+    FITSWidget.prototype.dispose = function () {
+        if (this.isDisposed) {
+            return;
+        }
+        this._context = null;
+        _super.prototype.dispose.call(this);
+    };
+    /**
+     * Handle `update-request` messages for the widget.
+     */
+    FITSWidget.prototype.onUpdateRequest = function (msg) {
+        this.title.text = this._context.path.split('/').pop();
+        var cm = this._context.contentsModel;
+        if (cm === null) {
+            return;
+        }
+        if (this.isAttached && this._context.model.toString()) {
+            window.JS9.Load(this._context.model.toString(), {"filename": "test.fits"});
+        }
+    };
+    /**
+     * Render FITS image
+     */
+    FITSWidget.prototype.renderFITS = function () {
+        var menuBar = document.createElement('div');
+        var main = document.createElement('div');
+        var colorbar = document.createElement('div');
+        menuBar.className = "JS9Menubar";
+        main.className = "JS9";
+        colorbar.className = "JS9Colorbar";
+        this.node.textContent = '';
+        this.node.appendChild(menuBar);
+        this.node.appendChild(main);
+        this.node.appendChild(colorbar);
+    };
+    FITSWidget.prototype.onAfterAttach = function () {
+        this.update();
+    };
+    return FITSWidget;
+}(phosphor_widget_1.Widget));
+exports.FITSWidget = FITSWidget;
+/**
+ * A widget factory for FITS images.
+ */
+var FITSWidgetFactory = (function (_super) {
+    __extends(FITSWidgetFactory, _super);
+    function FITSWidgetFactory() {
+        _super.apply(this, arguments);
+    }
+    /**
+     * Create a new widget given a context.
+     */
+    FITSWidgetFactory.prototype.createNew = function (context, kernel) {
+        var widget = new FITSWidget(context);
+        this.widgetCreated.emit(widget);
+        return widget;
+    };
+    return FITSWidgetFactory;
+}(docregistry_1.ABCWidgetFactory));
+exports.FITSWidgetFactory = FITSWidgetFactory;
+
+
+
+/*****************
+ ** WEBPACK FOOTER
+ ** ./~/jupyterlab/lib/fitswidget/widget.js
+ ** module id = 634
+ ** module chunks = 0
+ **/
