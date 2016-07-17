@@ -73,7 +73,9 @@ class FITSWidget extends Widget {
       return;
     }
     if (this.isAttached && this._context.model.toString()) {
-      (window as any).JS9.AddDivs("JS9");
+      if ((window as any).JS9.displays.length == 0) {
+        (window as any).JS9.AddDivs("JS9");
+      }
       (window as any).JS9.Load(this._context.model.toString(), {"filename": this.title.text}, {"display": "JS9"});
     }
 
