@@ -72,11 +72,12 @@ class FITSWidget extends Widget {
     if (cm === null) {
       return;
     }
-    if (this.isAttached && this._context.model.toString()) {
+    if (this.isAttached && this._context.model.toString() && !this._hasLoaded) {
       if ((window as any).JS9.displays.length == 0) {
         (window as any).JS9.AddDivs("JS9");
       }
       (window as any).JS9.Load(this._context.model.toString(), {"filename": this.title.text}, {"display": "JS9"});
+      this._hasLoaded = true;
     }
 
 
@@ -105,6 +106,7 @@ class FITSWidget extends Widget {
     this.update();
   }
   private _context: IDocumentContext<IDocumentModel>;
+  private _hasLoaded: boolean = false;
 }
 
 
